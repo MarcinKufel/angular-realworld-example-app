@@ -6,9 +6,10 @@ describe("Signup", () => {
     let email = "auto_" + randomString + "@gmail.com";
     let password = "Password1"
 
-    it("Test valid signup", () => {
-        cy.server();
-        cy.route("POST", "**/users").as("newUser")
+    it.only("Test valid signup", () => {
+    //    cy.server();
+    //   cy.route("POST", "**/users").as("newUser")
+        cy.intercept("POST", " **/users").as("newUser");
         cy.visit("http://localhost:4200/");
         cy.get(".nav").contains("Sign up").click();
         cy.get("[placeholder='Username").type(username);
@@ -16,9 +17,10 @@ describe("Signup", () => {
         cy.get("[placeholder='Password']").type(password);
         cy.get("button").contains("Sign up").click();
 
-        cy.wait("@newUser")
+        cy.wait("@newUser");
         cy.get("@newUser").should((xhr) => {
-            expect(xhr.status).to.eq(200);
+            //  expect(xhr.status).to.eq(200);
+            expect(xhr.response.statusCode).to.eq(200);
             expect(xhr.request.body.user.username).to.eq(username);
             expect(xhr.request.body.user.email).to.eq(email);
         })
