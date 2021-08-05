@@ -6,7 +6,7 @@ describe("Signup", () => {
     let email = "auto_" + randomString + "@gmail.com";
     let password = "Password1"
 
-    it.only("Test valid signup", () => {
+    it("Test valid signup", () => {
     //    cy.server();
     //   cy.route("POST", "**/users").as("newUser")
         cy.intercept("POST", " **/users").as("newUser");
@@ -29,8 +29,10 @@ describe("Signup", () => {
     })
 
     it("Test valid login", () => {
-        cy.server();
-        cy.route("GET", "**/tags", "fixture:popularTags.json")
+     //   cy.server();
+      //  cy.route("GET", "**/tags", "fixture:popularTags.json")
+      cy.intercept("GET", "**/tags", {fixture:'popularTags.json'});
+
         cy.visit("http://localhost:4200/");
         cy.get(".nav").contains("Sign in").click();
         cy.get("[placeholder='Email']").type(email);
@@ -42,8 +44,9 @@ describe("Signup", () => {
     })
 
     it("Mock global feed data", () => {
-        cy.server();
-        cy.route("GET", "**/articles/feed*", "fixture:testArticles.json").as("articles")
+     //   cy.server();
+     //   cy.route("GET", "**/articles/feed*", "fixture:testArticles.json").as("articles")
+     cy.intercept("GET", "**/articles/feed*", {fixture:'testArticles.json'}).as("articles")
         cy.visit("http://localhost:4200/");
         cy.get(".nav").contains("Sign in").click();
         cy.get("[placeholder='Email']").type(email);
