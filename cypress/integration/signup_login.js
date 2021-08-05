@@ -20,6 +20,7 @@ describe("Signup", () => {
         cy.wait("@newUser");
         cy.get("@newUser").should((xhr) => {
             //  expect(xhr.status).to.eq(200);
+            console.log(xhr);
             expect(xhr.response.statusCode).to.eq(200);
             expect(xhr.request.body.user.username).to.eq(username);
             expect(xhr.request.body.user.email).to.eq(email);
